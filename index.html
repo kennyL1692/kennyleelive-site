@@ -208,6 +208,40 @@ h3{font-family:'Archivo',sans-serif;font-weight:600;letter-spacing:-.01em;margin
 .wshot{position:relative;overflow:hidden;background:#fff;border:1px solid var(--rule);aspect-ratio:16/10;}
 .wshot img{width:100%;height:100%;object-fit:cover;object-position:top center;transition:transform .5s cubic-bezier(.2,.7,.3,1);}
 .wcard:hover .wshot img{transform:scale(1.035);}
+.wshot.scroll-preview img{object-position:center top;transform:none;}
+.wcard.preview-near .wshot.scroll-preview img,
+.wcard:hover .wshot.scroll-preview img,
+.wcard:focus-visible .wshot.scroll-preview img{transform:none;animation:preview-scroll var(--preview-duration) linear infinite alternate;}
+@keyframes preview-scroll{
+  0%,8%{object-position:center top;}
+  92%,100%{object-position:center bottom;}
+}
+.wcard:hover .wshot.spin-preview img{transform:none;}
+.spin-wheel{
+  position:absolute;left:44.92%;top:26.8%;width:29%;aspect-ratio:1;
+  border-radius:50%;overflow:hidden;pointer-events:none;
+}
+.spin-wheel img{
+  position:absolute;left:-154.89%;top:-57.76%;width:344.83%;height:auto;
+  max-width:none;object-fit:unset;transition:none;
+}
+.wcard.preview-near .spin-wheel,
+.wcard:hover .spin-wheel,
+.wcard:focus-visible .spin-wheel{animation:wheel-spin 4s cubic-bezier(.2,.7,.25,1) infinite;}
+@keyframes wheel-spin{
+  0%,10%{transform:rotate(0deg);}
+  90%,100%{transform:rotate(720deg);}
+}
+.solar-preview > img{transition:none;}
+.wcard.preview-near .solar-preview > img,
+.wcard:hover .solar-preview > img,
+.wcard:focus-visible .solar-preview > img{animation:solar-tour 9s ease-in-out infinite;}
+@keyframes solar-tour{
+  0%,8%,100%{transform:none;}
+  25%,32%{transform:scale(1.9);}
+  49%,56%{transform:translate(-8%,-50%) scale(2);}
+  75%,83%{transform:translate(-90%,-100%) scale(3);}
+}
 .wshot .go{
   position:absolute;right:0;bottom:0;background:var(--ink);color:var(--paper);
   font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:10px 16px;
@@ -224,6 +258,14 @@ h3{font-family:'Archivo',sans-serif;font-weight:600;letter-spacing:-.01em;margin
 .vshot{position:relative;overflow:hidden;aspect-ratio:16/9;background:var(--ink);}
 .vshot img{width:100%;height:100%;object-fit:cover;opacity:.82;transition:opacity .3s ease,transform .5s cubic-bezier(.2,.7,.3,1);}
 .vcard:hover .vshot img{opacity:1;transform:scale(1.04);}
+.vshot.video-preview video{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  opacity:0;pointer-events:none;transition:opacity .25s ease;
+}
+.vshot.portrait-preview video{object-fit:contain;background:var(--ink);}
+.vcard.preview-near .video-preview video,
+.vcard:hover .video-preview video,
+.vcard:focus-visible .video-preview video{opacity:1;}
 .play{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;}
 .play i{
   width:56px;height:56px;border-radius:50%;background:rgba(250,247,241,.94);
@@ -292,6 +334,7 @@ h3{font-family:'Archivo',sans-serif;font-weight:600;letter-spacing:-.01em;margin
 .strip figure{margin:0;aspect-ratio:4/3;overflow:hidden;background:var(--parchment);}
 .strip figure:first-child{aspect-ratio:auto;}
 .strip img{width:100%;height:100%;object-fit:cover;transition:transform .5s cubic-bezier(.2,.7,.3,1);}
+.strip .strip-portrait img{object-fit:contain;}
 .strip figure:hover img{transform:scale(1.05);}
 
 .close{background:var(--ink);color:var(--paper);text-align:center;}
@@ -306,7 +349,13 @@ h3{font-family:'Archivo',sans-serif;font-weight:600;letter-spacing:-.01em;margin
 .close-contact{margin-top:30px;display:flex;gap:12px;justify-content:center;flex-wrap:wrap;align-items:center;font-size:14.5px;color:#9FAAC4;}
 .close-contact a{color:var(--paper);border-bottom:1px solid transparent;transition:border-color .18s ease,color .18s ease;}
 .close-contact a:hover{color:var(--ember-lt);border-bottom-color:var(--ember-lt);}
-.close-fine{margin-top:16px;font-size:12.5px;color:#6E7B96;letter-spacing:.04em;}
+.close-linkedin{
+  display:flex;width:max-content;align-items:center;gap:12px;margin:26px auto 0;padding:13px 21px;
+  background:#0A66C2;color:#fff;font-weight:700;font-size:15px;
+  transition:background .2s ease,transform .2s ease;
+}
+.close-linkedin:hover,.close-linkedin:focus-visible{background:#0D78DE;transform:translateY(-3px);}
+.close-linkedin span{font-size:21px;line-height:1;}
 
 .wa{position:fixed;right:22px;bottom:22px;z-index:70;width:54px;height:54px;border-radius:50%;background:#25D366;color:#fff;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(14,27,51,.28);transition:transform .18s ease;animation:wa-shake 5s ease-in-out infinite;}
 @keyframes wa-shake{
@@ -329,6 +378,10 @@ h3{font-family:'Archivo',sans-serif;font-weight:600;letter-spacing:-.01em;margin
 @media (prefers-reduced-motion:reduce){
   .rv{opacity:1;transform:none;}
   html{scroll-behavior:auto;}
+  .wshot.scroll-preview img{animation:none !important;}
+  .spin-wheel{animation:none !important;}
+  .solar-preview > img{animation:none !important;}
+  .video-preview video{display:none !important;}
   *{transition:none !important;}
 }
 </style>
@@ -373,7 +426,7 @@ h3{font-family:'Archivo',sans-serif;font-weight:600;letter-spacing:-.01em;margin
     </div>
     <div class="strip rv">
       <figure><img src="assets/gallery/physical-5-hall.jpg" alt="Full-hall training session with 300+ attendees" loading="lazy"></figure>
-      <figure><img src="assets/gallery/worq-speaking.jpg" alt="Kenny presenting at WORQ Subang" loading="lazy"></figure>
+      <figure><img src="assets/gallery/workshop-group.jpg" alt="Group photo after a training workshop" loading="lazy"></figure>
       <figure><img src="assets/gallery/worq-audience.jpg" alt="Full audience at WORQ Subang session" loading="lazy"></figure>
       <figure><img src="assets/gallery/help-university.jpg" alt="Cohort group photo at HELP University" loading="lazy"></figure>
       <figure><img src="assets/gallery/selfie-claude.jpg" alt="Claude AI for Business training selfie" loading="lazy"></figure>
@@ -381,6 +434,8 @@ h3{font-family:'Archivo',sans-serif;font-weight:600;letter-spacing:-.01em;margin
       <figure><img src="assets/gallery/physical-fmm-panel.jpg" alt="FMM Marketing and Branding Conference panel" loading="lazy"></figure>
       <figure><img src="assets/gallery/physical-9-jj.jpg" alt="Corporate team training session" loading="lazy"></figure>
       <figure><img src="assets/gallery/physical-10-pink1.jpg" alt="Workshop group photo" loading="lazy"></figure>
+      <figure class="strip-portrait"><img src="assets/gallery/workshop-three-people.jpg" alt="Kenny with two people at an AI workshop" loading="lazy"></figure>
+      <figure><img src="assets/gallery/ai-workshop-training.jpg" alt="Kenny leading an AI workshop with participants using laptops" loading="lazy"></figure>
     </div>
   </div>
 </section>
@@ -485,19 +540,19 @@ h3{font-family:'Archivo',sans-serif;font-weight:600;letter-spacing:-.01em;margin
     </div>
     <div class="work-grid rv">
       <a class="wcard" href="https://propmy-kenny.netlify.app/" target="_blank" rel="noopener">
-        <div class="wshot"><img src="assets/previews/propmy.jpg" alt="PropMy property listing application" loading="lazy"><span class="go">Open live ↗</span></div>
+        <div class="wshot scroll-preview" style="--preview-duration:5s"><img src="assets/previews/propmy-scroll.jpg" alt="Scrolling preview of the PropMy property listing application" loading="lazy"><span class="go">Open live ↗</span></div>
         <div class="wmeta"><div><h3>PropMy</h3><p>Searchable property listings — adaptable to any business catalogue.</p></div><span class="arrow">↗</span></div>
       </a>
       <a class="wcard" href="https://aurea-jewels.netlify.app/" target="_blank" rel="noopener">
-        <div class="wshot"><img src="assets/previews/aurea.jpg" alt="Aurea Jewels premium brand website" loading="lazy"><span class="go">Open live ↗</span></div>
+        <div class="wshot scroll-preview" style="--preview-duration:12s"><img src="assets/previews/aurea-scroll.jpg" alt="Scrolling preview of the Aurea Jewels website" loading="lazy"><span class="go">Open live ↗</span></div>
         <div class="wmeta"><div><h3>Aurea Jewels</h3><p>Premium brand storefront for presenting products properly.</p></div><span class="arrow">↗</span></div>
       </a>
       <a class="wcard" href="https://kenny-spinwheel.netlify.app/" target="_blank" rel="noopener">
-        <div class="wshot"><img src="assets/previews/spinwheel.jpg" alt="Spin Wheel lucky draw application" loading="lazy"><span class="go">Open live ↗</span></div>
+        <div class="wshot spin-preview"><img src="assets/previews/spinwheel.jpg" alt="Spin Wheel lucky draw application" loading="lazy"><span class="spin-wheel" aria-hidden="true"><img src="assets/previews/spinwheel.jpg" alt="" loading="lazy"></span><span class="go">Open live ↗</span></div>
         <div class="wmeta"><div><h3>Spin Wheel</h3><p>Lucky draw for promotions, events and lead capture.</p></div><span class="arrow">↗</span></div>
       </a>
       <a class="wcard" href="https://3dsolarsystemshow.netlify.app/" target="_blank" rel="noopener">
-        <div class="wshot"><img src="assets/previews/solar.jpg" alt="Interactive 3D viewer demo" loading="lazy"><span class="go">Open live ↗</span></div>
+        <div class="wshot solar-preview"><img src="assets/previews/solar.jpg" alt="Interactive 3D viewer demo" loading="lazy"><span class="go">Open live ↗</span></div>
         <div class="wmeta"><div><h3>3D Product Viewer</h3><p>Interactive 3D — works for products, property or training.</p></div><span class="arrow">↗</span></div>
       </a>
     </div>
@@ -512,15 +567,15 @@ h3{font-family:'Archivo',sans-serif;font-weight:600;letter-spacing:-.01em;margin
     </div>
     <div class="vid-grid rv">
       <a class="vcard" href="https://www.facebook.com/share/v/1CNHopspHY/" target="_blank" rel="noopener">
-        <div class="vshot"><img src="assets/video/conference.jpg" alt="Melaka National AI Conference" loading="lazy"><span class="play"><i></i></span></div>
+        <div class="vshot video-preview"><img src="assets/video/conference.jpg" alt="Melaka National AI Conference" loading="lazy"><video src="assets/video/conference-preview.webm" poster="assets/video/conference.jpg" muted loop playsinline preload="metadata" aria-hidden="true"></video><span class="play"><i></i></span></div>
         <div class="vmeta"><span class="tag">Keynote</span><h3>Melaka National AI Conference</h3><p>Practical AI and vibe coding for business, to a room of 300.</p></div>
       </a>
       <a class="vcard" href="https://www.facebook.com/share/v/1D2xU7m9qV/" target="_blank" rel="noopener">
-        <div class="vshot"><img src="assets/video/corporate.jpg" alt="Corporate AI training session" loading="lazy"><span class="play"><i></i></span></div>
+        <div class="vshot video-preview portrait-preview"><img src="assets/video/corporate.jpg" alt="Corporate AI training session" loading="lazy"><video src="assets/video/corporate-preview.webm" poster="assets/video/corporate.jpg" muted loop playsinline preload="metadata" aria-hidden="true"></video><span class="play"><i></i></span></div>
         <div class="vmeta"><span class="tag">In-house</span><h3>Corporate AI training</h3><p>Seven years helping companies — many report productivity gains of 20% and more.</p></div>
       </a>
       <a class="vcard" href="https://www.facebook.com/share/v/19Nq9e429g/" target="_blank" rel="noopener">
-        <div class="vshot"><img src="assets/video/speaking.jpg" alt="AI video production work" loading="lazy"><span class="play"><i></i></span></div>
+        <div class="vshot video-preview portrait-preview"><img src="assets/video/speaking.jpg" alt="AI video production work" loading="lazy"><video src="assets/video/production-preview.webm" poster="assets/video/speaking.jpg" muted loop playsinline preload="metadata" aria-hidden="true"></video><span class="play"><i></i></span></div>
         <div class="vmeta"><span class="tag">Production</span><h3>AI video projects</h3><p>What frontier models can produce, made in-house.</p></div>
       </a>
     </div>
@@ -618,8 +673,8 @@ h3{font-family:'Archivo',sans-serif;font-weight:600;letter-spacing:-.01em;margin
 
 <section class="sec close">
   <div class="wrap">
-    <h2>Your team already has the capacity.</h2>
-    <p class="prose">They just haven't been given the tools. Tell me what your team does all day, and I'll tell you honestly whether AI training would move the needle.</p>
+    <h2>AI is changing every business. Get your team ready.</h2>
+    <p class="prose">Your team already has the capacity. Give them practical AI skills to stay ahead. Tell me what your team does, and I'll tell you honestly whether training would help.</p>
     <div class="row">
       <a class="btn btn-ember" href="https://wa.me/60163280917?text=Hi%20Kenny%2C%20I%27d%20like%20to%20enquire%20about%20in-house%20AI%20training%20for%20my%20company." target="_blank" rel="noopener">Book in-house training</a>
       <a class="btn btn-line inv" href="https://wa.me/60163280917?text=Hi%20Kenny%2C%20I%27d%20like%20to%20join%20your%20next%20public%20AI%20workshop." target="_blank" rel="noopener">Join a public workshop</a>
@@ -628,14 +683,12 @@ h3{font-family:'Archivo',sans-serif;font-weight:600;letter-spacing:-.01em;margin
       <img src="assets/logos/hrdcorp.png" alt="HRD Corp">
       <span><b>Claimable under HRD Corp</b><i>Accredited Trainer ID 6559</i></span>
     </div>
+    <a class="close-linkedin" href="https://www.linkedin.com/in/kennyleelive/" target="_blank" rel="noopener">Connect with me on LinkedIn <span aria-hidden="true">↗</span></a>
     <div class="close-contact">
       <a href="https://wa.me/60163280917" target="_blank" rel="noopener">+6 016-328 0917</a>
       <span>·</span>
       <a href="mailto:kennyl1692@gmail.com">kennyl1692@gmail.com</a>
-      <span>·</span>
-      <a href="https://www.linkedin.com/in/kennyleelive/" target="_blank" rel="noopener">LinkedIn</a>
     </div>
-    <p class="close-fine">Kenny Lee · Clarity Consultancy · Malaysia</p>
   </div>
 </section>
 
@@ -648,6 +701,59 @@ const io = new IntersectionObserver((es)=>{
   es.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
 },{threshold:.1, rootMargin:'0px 0px -40px 0px'});
 document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+
+const proximityPreviews = [...document.querySelectorAll('.scroll-preview, .spin-preview, .solar-preview, .video-preview')];
+const teaserVideos = [...document.querySelectorAll('.video-preview video')];
+function syncTeaserVideos(){
+  teaserVideos.forEach(video => {
+    const card = video.closest('.vcard');
+    const active = card.classList.contains('preview-near') || card.matches(':hover, :focus-visible');
+    if(active && !matchMedia('(prefers-reduced-motion:reduce)').matches){
+      if(video.paused) video.play().catch(()=>{});
+    } else if(!video.paused){
+      video.pause();
+      video.currentTime = 0;
+    }
+  });
+}
+if (matchMedia('(hover:hover) and (pointer:fine)').matches) {
+  let pointerPosition = null;
+  function updateNearby(){
+    if(!pointerPosition) return;
+    const {clientX, clientY} = pointerPosition;
+    let nearest = null;
+    let nearestDistance = 160;
+    proximityPreviews.forEach(preview => {
+      const rect = preview.getBoundingClientRect();
+      const dx = Math.max(rect.left - clientX, 0, clientX - rect.right);
+      const dy = Math.max(rect.top - clientY, 0, clientY - rect.bottom);
+      const distance = Math.hypot(dx, dy);
+      if (distance < nearestDistance) {
+        nearest = preview.closest('.wcard, .vcard');
+        nearestDistance = distance;
+      }
+    });
+    proximityPreviews.forEach(preview => {
+      const card = preview.closest('.wcard, .vcard');
+      card.classList.toggle('preview-near', card === nearest);
+    });
+    syncTeaserVideos();
+  }
+  document.addEventListener('pointermove', event => {pointerPosition = event; updateNearby();}, {passive:true});
+  window.addEventListener('scroll', updateNearby, {passive:true});
+  document.addEventListener('pointerleave', () => {
+    pointerPosition = null;
+    proximityPreviews.forEach(preview => preview.closest('.wcard, .vcard').classList.remove('preview-near'));
+    syncTeaserVideos();
+  });
+}
+teaserVideos.forEach(video => {
+  const card = video.closest('.vcard');
+  card.addEventListener('mouseenter', syncTeaserVideos);
+  card.addEventListener('mouseleave', syncTeaserVideos);
+  card.addEventListener('focusin', syncTeaserVideos);
+  card.addEventListener('focusout', syncTeaserVideos);
+});
 </script>
 
 </body>
